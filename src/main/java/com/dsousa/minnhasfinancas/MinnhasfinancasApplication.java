@@ -1,0 +1,13 @@
+package com.dsousa.minnhasfinancas;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MinnhasfinancasApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MinnhasfinancasApplication.class, args);
+	}
+
+}
