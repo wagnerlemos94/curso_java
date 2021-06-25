@@ -1,7 +1,11 @@
 package com.dsousa.minnhasfinancas.service.impl;
 
-import org.springframework.stereotype.Service;
+import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.dsousa.minnhasfinancas.exeption.ErrorAutenticacao;
 import com.dsousa.minnhasfinancas.exeption.RegraNegocioException;
 import com.dsousa.minnhasfinancas.model.entity.Usuario;
 import com.dsousa.minnhasfinancas.model.repository.UsuarioRepository;
@@ -19,14 +23,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario autenticar(String email, String senha) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Usuario> usuario = repository.findByEmail(email);
+		if(!usuario.isPresent()) {
+			throw new ErrorAutenticacao("Usuário não encontrado para email informado.");
+		}
+		if(!usuario.get().getSenha().equals(senha)) {
+			throw new ErrorAutenticacao("Senha inválida.");
+		}
+		return usuario.get();
 	}
 
 	@Override
+	@Transactional
 	public Usuario salvarUsuario(Usuario usuario) {
-		// TODO Auto-generated method stub
-		return null;
+		validarEmail(usuario.getEmail());
+		return repository.save(usuario);
 	}
 
 	@Override
