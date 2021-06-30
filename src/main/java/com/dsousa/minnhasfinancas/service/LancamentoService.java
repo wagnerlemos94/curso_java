@@ -1,6 +1,7 @@
 package com.dsousa.minnhasfinancas.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.dsousa.minnhasfinancas.model.entity.Lancamento;
 import com.dsousa.minnhasfinancas.model.enuns.StatusLancamento;
@@ -18,5 +19,7 @@ public interface LancamentoService {
 	void atualizarStatus(Lancamento lancamento, StatusLancamento status);
 	
 	void validar(Lancamento lancamento);
+	
+	Optional<Lancamento> obterPorId(Long id);
 
 }
