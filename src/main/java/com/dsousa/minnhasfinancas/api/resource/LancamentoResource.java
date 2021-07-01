@@ -75,7 +75,8 @@ public class LancamentoResource {
 			try {
 				Lancamento lancamento = converter(dto);
 				lancamento.setId(entity.getId());
-				service.atualizar(lancamento);
+				lancamento = service.atualizar(lancamento);
+				System.out.println(lancamento.toString());
 				return ResponseEntity.ok(lancamento);
 			} catch (RegraNegocioException e) {
 				return ResponseEntity.badRequest().body(e.getMessage());
@@ -108,7 +109,6 @@ public class LancamentoResource {
 		if(dto.getStatus() != null) {
 			lancamento.setStatus(StatusLancamento.valueOf(dto.getStatus()));
 		}
-
 		return lancamento;
 	}
 
