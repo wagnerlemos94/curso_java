@@ -24,17 +24,17 @@ import com.dsousa.minnhasfinancas.model.enuns.TipoLancamento;
 import com.dsousa.minnhasfinancas.service.LancamentoService;
 import com.dsousa.minnhasfinancas.service.UsuarioService;
 
+import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/api/lancamentos")
+@RequiredArgsConstructor
 public class LancamentoResource {
 
-	private LancamentoService service;
-	private UsuarioService usuarioService;
+	private final LancamentoService service;
+	private final UsuarioService usuarioService;
 
-	public LancamentoResource(LancamentoService service) {
-		this.service = service;
-	}
 
 	@GetMapping
 	public ResponseEntity buscar(@RequestParam(value = "descricao", required = false) String descricao,
@@ -97,13 +97,17 @@ public class LancamentoResource {
 		lancamento.setAno(dto.getAno());
 		lancamento.setMes(dto.getMes());
 		lancamento.setValor(dto.getValor());
-
-		Usuario usuario = usuarioService.obterPorId(dto.getId())
+		
+		Usuario usuario = usuarioService.obterPorId(dto.getUsuario())
 				.orElseThrow(() -> new RegraNegocioException("Usuário não encontrado para o Id informado."));
 
 		lancamento.setUsuario(usuario);
-		lancamento.setTipo(TipoLancamento.valueOf(dto.getTipo()));
-		lancamento.setStatus(StatusLancamento.valueOf(dto.getStatus()));
+		if(dto.getTipo() != null) {			
+			lancamento.setTipo(TipoLancamento.valueOf(dto.getTipo()));
+		}
+		if(dto.getStatus() != null) {
+			lancamento.setStatus(StatusLancamento.valueOf(dto.getStatus()));
+		}
 
 		return lancamento;
 	}
